@@ -1,3 +1,18 @@
+all_task = {
+    1: {
+        'description':'Task Test 1',
+        'status':'todo',
+        'createdAt':True,
+        'updatedAt':False
+    },
+    2: {
+        'description':'Task Test 2',
+        'status':'in-progress',
+        'createdAt':True,
+        'updatedAt':True
+    },
+}
+
 def add_task():
     pass
 
@@ -14,7 +29,7 @@ def list_task(arg):
     pass
 
 def main():
-    pass
+    print(all_task)
 
 if __name__ == '__main__':
     main()
