@@ -12,6 +12,9 @@ all_task = {
         'updatedAt':True
     },
 }
+def get_id(agenda) -> int:
+    new_id = max([i for i in agenda], default=0) + 1
+    return new_id
 
 def add_task():
     pass
@@ -29,7 +32,7 @@ def list_task(arg):
     pass
 
 def main():
-    print(all_task)
+    print(get_id())
 
 if __name__ == '__main__':
     main()
