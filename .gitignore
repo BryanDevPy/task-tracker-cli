@@ -1,0 +1,67 @@
+# Otros
+*.txt
+*.json
+
+# Bytecode y cachés
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Archivos de entorno
+.env
+.env.*
+
+# Entornos virtuales (con venv o conda)
+venv/
+.venv/
+env/
+.env/
+conda-env/
+*.conda
+*.egg-info/
+*.egg
+
+# Archivos de log y base de datos local
+*.log
+*.sqlite3
+
+# Config de OS y editores
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Archivos de prueba o cobertura
+htmlcov/
+.tox/
+.nox/
+coverage.*
+.cache
+.pytest_cache/
+
+# FastAPI / Uvicorn / Starlette
+instance/
+*.db
+*.pid
+
+# Archivos de dependencias generados automáticamente
+pip-wheel-metadata/
+poetry.lock
+poetry.toml
+
+# Build
+build/
+dist/
+*.egg
+*.whl
+
+# Systemd / Linux específico
+*.service
+*.socket
+*.target
+
+# VSCode launch configs (opcional)
+.vscode/launch.json
