@@ -30,7 +30,7 @@ def add_task(description: str):
         'createdAt':True,
         'updatedAt':False
     }
-    all_task[task_id] = [new_task]
+    all_task[task_id] = new_task
 
 def update_task(id):
     pass
@@ -41,12 +41,20 @@ def delete_task(id):
 def mark_task(arg, id):
     pass
 
-def list_task(arg):
-    pass
+def list_task():
+    for k, v in all_task.items():
+        if v["updatedAt"]:
+            print(f'ID: {k}\nCreation date: {v["createdAt"]}\nUpdate date: {v["updatedAt"]}')
+        else:
+            print(f'ID: {k}\nCreation date: {v["createdAt"]}')
+        print(f'Description: {v["description"]}')
+        print(f'Status: {v["status"]}')
+        print('='*100)
+        
 
 def main():
     add_task('descripción para test')
-    print(all_task)
+    list_task()
 
 if __name__ == '__main__':
     main()
