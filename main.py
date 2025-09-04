@@ -12,7 +12,13 @@ all_task = {
         'updatedAt':True
     },
 }
-def get_id(agenda) -> str:
+def get_id(agenda: dict) -> str:
+    """ Generates a new incremental ID based on the calendar keys.
+    Args:
+        calendar (dict): Dictionary of tasks, where the keys are IDs in string format.
+    Returns:
+        str: New ID as a string.
+    """
     new_id = max(map(int, agenda), default=0) + 1
     return str(new_id)
 
