@@ -22,8 +22,15 @@ def get_id(agenda: dict) -> str:
     new_id = max(map(int, agenda), default=0) + 1
     return str(new_id)
 
-def add_task():
-    pass
+def add_task(description: str):
+    task_id = get_id(all_task)
+    new_task = {
+        'description':description,
+        'status':'todo',
+        'createdAt':True,
+        'updatedAt':False
+    }
+    all_task[task_id] = [new_task]
 
 def update_task(id):
     pass
@@ -38,7 +45,8 @@ def list_task(arg):
     pass
 
 def main():
-    print(get_id(all_task))
+    add_task('descripción para test')
+    print(all_task)
 
 if __name__ == '__main__':
     main()
