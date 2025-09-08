@@ -70,7 +70,15 @@ def add_task(description: str):
         json.dump(task, f, ensure_ascii=False, indent=4)
 
 def update_task(id_task: str, new_description: str):
+    """ Actualiza la descripción de una tarea.
 
+    Args:
+        id_task (str): Id de la tarea a actualizar.
+        new_description (str): Nueva descrición de la tarea.
+
+    Returns:
+        None 
+    """
     updatedAt = get_date() # Obtenemos la fecha actual
     
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
