@@ -1,7 +1,18 @@
 import json
 from pathlib import Path
+from datetime import datetime
 
 AGENDA_FILE = Path('agenda.json')
+
+def get_date() -> str:
+    """Genera la fecha y hora actuales en formato legible.
+
+    Returns:
+        str: Cadena con el formato 'Day, DD of Month YYYY at HH:MM AM/PM.
+    """
+    brand_temporal = datetime.now()
+    format_date = brand_temporal.strftime("%A, %d of %B %Y at %I:%M %p.")
+    return format_date
 
 def load_agenda():
     """
@@ -41,13 +52,14 @@ def add_task(description: str):
 
     Returns: None
     """
+    createdAt = get_date() # Obtenemos la fecha actual
     task = load_agenda() # Cargamos el dict actual
     task_id = get_id(task) # Obtenemos el id disponible
 
     content_task = {
         'description':description,
         'status':'todo',
-        'createdAt':True,
+        'createdAt':createdAt,
         'updatedAt':False
     }
 
@@ -57,8 +69,19 @@ def add_task(description: str):
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(task, f, ensure_ascii=False, indent=4)
 
-def update_task(id):
-    pass
+def update_task(id_task: str):
+    updatedAt = get_date() # Obtenemos la fecha actual
+    
+    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
+        agenda = json.load(f)
+
+    agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
+    
+    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(agenda, f, ensure_ascii=False, indent=4)
+
+    
+
 
 def delete_task(id):
     pass
@@ -78,7 +101,7 @@ def list_task():
         
 
 def main():
-    add_task('descripción para test')
+    pass
 
 if __name__ == '__main__':
     main()
