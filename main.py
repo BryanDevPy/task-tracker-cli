@@ -69,13 +69,15 @@ def add_task(description: str):
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(task, f, ensure_ascii=False, indent=4)
 
-def update_task(id_task: str):
+def update_task(id_task: str, new_description: str):
+
     updatedAt = get_date() # Obtenemos la fecha actual
     
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
 
     agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
+    agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
     
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
@@ -101,7 +103,7 @@ def list_task():
         
 
 def main():
-    pass
+    update_task('2', 'Actualización para test.')
 
 if __name__ == '__main__':
     main()
