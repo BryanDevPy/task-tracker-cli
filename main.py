@@ -132,11 +132,15 @@ def mark_task(arg: str, id_task: str):
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
-def list_task():
+def list_task(arg: str = None):
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
 
     for k, v in agenda.items():
+
+        if arg and v['status'] != arg:
+            continue
+
         print(f'ID: {k}')
         print('-'*110)
         if v["updatedAt"]:
