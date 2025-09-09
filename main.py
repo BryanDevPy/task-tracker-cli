@@ -94,7 +94,16 @@ def update_task(id_task: str, new_description: str = None):
 def delete_task(id):
     pass
 
-def mark_task(arg, id_task):
+def mark_task(arg: str, id_task: str):
+    """Actualiza el status de la tarea y su fecha de modificación.
+
+    Args:
+        arg (str): status de la tarea.
+        id_task (str): id de la tarea a marcar.
+    
+    Returns:
+        None
+    """
     update_task(id_task)
     
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
