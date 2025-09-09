@@ -92,6 +92,14 @@ def update_task(id_task: str, new_description: str = None):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def delete_task(id_task: str):
+    """Elimina una tarea de la agenda.
+
+    Args:
+        id_task (str): id de la tarea a eliminar.
+    
+    Returns:
+        None
+    """
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
 
