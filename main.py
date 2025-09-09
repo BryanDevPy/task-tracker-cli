@@ -11,7 +11,7 @@ def get_date() -> str:
         str: Cadena con el formato 'Day, DD of Month YYYY at HH:MM AM/PM.
     """
     brand_temporal = datetime.now()
-    format_date = brand_temporal.strftime("%A, %d of %B %Y at %I:%M %p.")
+    format_date = brand_temporal.strftime("%A, %d of %b %Y at %I:%M %p.")
     return format_date
 
 def load_agenda():
@@ -133,18 +133,24 @@ def mark_task(arg: str, id_task: str):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def list_task():
-    for k, v in all_task.items():
+    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
+        agenda = json.load(f)
+
+    for k, v in agenda.items():
+        print(f'ID: {k}')
+        print('-'*110)
         if v["updatedAt"]:
-            print(f'ID: {k}\nCreation date: {v["createdAt"]}\nUpdate date: {v["updatedAt"]}')
+            print(f'Create date: {v["createdAt"]:<} {"|":^10} Update date: {v["updatedAt"]:>}')
         else:
-            print(f'ID: {k}\nCreation date: {v["createdAt"]}')
-        print(f'Description: {v["description"]}')
-        print(f'Status: {v["status"]}')
-        print('='*100)
+            print(f'Creation date: {v["createdAt"]}')
+        print('-'*110)
+        print(f'* Description: {v["description"]}')
+        print(f'* Status: {v["status"]}')
+        print('='*110)
         
 
 def main():
-    delete_task('7')
+    pass
 
 if __name__ == '__main__':
     main()
