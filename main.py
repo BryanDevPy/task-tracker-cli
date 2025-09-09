@@ -91,8 +91,18 @@ def update_task(id_task: str, new_description: str = None):
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
-def delete_task(id):
-    pass
+def delete_task(id_task: str):
+    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
+        agenda = json.load(f)
+
+    if id_task in agenda:
+        del agenda[id_task]
+        print(f'Tarea {id_task} eliminada')
+    else:
+        print('Tarea no encontrada.')
+    
+    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def mark_task(arg: str, id_task: str):
     """Actualiza el status de la tarea y su fecha de modificación.
@@ -126,7 +136,7 @@ def list_task():
         
 
 def main():
-    mark_task('in-progress', '5')
+    delete_task('7')
 
 if __name__ == '__main__':
     main()
