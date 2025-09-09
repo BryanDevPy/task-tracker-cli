@@ -94,8 +94,16 @@ def update_task(id_task: str, new_description: str = None):
 def delete_task(id):
     pass
 
-def mark_task(arg, id):
-    pass
+def mark_task(arg, id_task):
+    update_task(id_task)
+    
+    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
+        agenda = json.load(f)
+
+    agenda[id_task]['status'] = arg # Agregamos el nuevo status
+    
+    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def list_task():
     for k, v in all_task.items():
@@ -109,7 +117,7 @@ def list_task():
         
 
 def main():
-    update_task('5')
+    mark_task('in-progress', '5')
 
 if __name__ == '__main__':
     main()
