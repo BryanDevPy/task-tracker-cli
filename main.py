@@ -87,9 +87,15 @@ def update_task(id_task: str, new_description: str = None):
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
 
-    agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
-    if new_description:
-        agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
+    if id_task in agenda:
+        agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
+
+        if new_description:
+            agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
+    else:
+        print('Tarea no encontrada.')
+
+    
     
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
