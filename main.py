@@ -1,4 +1,5 @@
 import json
+import argparse
 from pathlib import Path
 from datetime import datetime
 
@@ -68,6 +69,8 @@ def add_task(description: str):
     # Persistimos la agenda actualizada en el archivo
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(task, f, ensure_ascii=False, indent=4)
+    
+    print(f'Tarea agregada con éxito (ID: {task_id})')
 
 def update_task(id_task: str, new_description: str = None):
     """ Actualiza la descripción de una tarea.
@@ -148,19 +151,69 @@ def list_task(arg: str = None):
             continue
 
         print(f'ID: {k}')
-        print('-'*110)
+        print('-'*115)
         if v["updatedAt"]:
             print(f'Create date: {v["createdAt"]:<} {"|":^10} Update date: {v["updatedAt"]:>}')
         else:
             print(f'Creation date: {v["createdAt"]}')
-        print('-'*110)
+        print('-'*115)
         print(f'* Description: {v["description"]}')
         print(f'* Status: {v["status"]}')
-        print('='*110)
+        print('='*115)
         
 
 def main():
-    pass
+    parser = argparse.ArgumentParser(prog='task-cli', description='task manager')
+
+    subparser = parser.add_subparsers(dest='command', help='comandos disponibles')
+
+    # subcomando 'add'
+    parser_add = subparser.add_parser('add', help='agrega una tarea.')
+    parser_add.add_argument('description', type=str, help='descripción de la tarea.')
+
+    # subcomando 'update'
+    parser_update = subparser.add_parser('update', help='actualiza una tarea.')
+    parser_update.add_argument('id_task', type=str, help='id de la tarea.')
+    parser_update.add_argument('description', type=str, help='nueva descripción de la tarea.')
+
+    # subcomando 'delete'
+    parser_delete = subparser.add_parser('delete', help='elimina una tarea.')
+    parser_delete.add_argument('id_task', type=str, help='id de la tarea.')
+
+    # subcomando 'mark-in-progress'
+    parser_mark_in_progress = subparser.add_parser('mark-in-progress', help='marca la tarea como en progreso.')
+    parser_mark_in_progress.add_argument('id_task', type=str, help='id de la tarea.')
+
+    # subcomando 'mark-done'
+    parser_mark_done = subparser.add_parser('mark-done', help='marca la tarea como terminada.')
+    parser_mark_done.add_argument('id_task', type=str, help='id de la tarea.')
+
+    # subcomando 'list'
+    parser_list = subparser.add_parser('list', help='lista todas las tareas.')
+    parser_list.add_argument('-m', choices=['todo', 'in-progress', 'done'])
+
+    args = parser.parse_args()
+
+    # CLI
+    if args.command == 'add':
+        add_task(args.description)
+    elif args.command == 'update':
+        update_task(args.id_task, args.description)
+    elif args.command == 'delete':
+        delete_task(args.id_task)
+    elif args.command == 'mark-in-progress':
+        mark_task('in-progress', args.id_task)
+    elif args.command == 'mark-done':
+        mark_task('done', args.id_task)
+    elif args.command == 'list':
+        if args.m == 'in-progress':
+            list_task(args.m)
+        elif args.m == 'done':
+            list_task(args.m)
+        elif args.m == 'todo':
+            list_task(args.m)
+        else:
+            list_task()
 
 if __name__ == '__main__':
     main()
