@@ -136,7 +136,7 @@ def mark_task(arg: str, id_task: str):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def list_task(arg: str = None):
-     """Lista las tareas almacenadas en la agenda, filtrando por estado opcional.
+    """Lista las tareas almacenadas en la agenda, filtrando por estado opcional.
 
     Args:
         arg (str, optional): Estado de la tarea a filtrar. 
