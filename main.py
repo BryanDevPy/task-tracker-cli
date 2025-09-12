@@ -6,10 +6,10 @@ from datetime import datetime
 AGENDA_FILE = Path('agenda.json')
 
 def get_date() -> str:
-    """Genera la fecha y hora actuales en formato legible.
+    """Generates the current date and time in human-readable format.
 
     Returns:
-        str: Cadena con el formato 'Day, DD of Month YYYY at HH:MM AM/PM.
+    str: String in the format 'Day, DD of Month YYYY at HH:MM AM/PM.
     """
     brand_temporal = datetime.now()
     format_date = brand_temporal.strftime("%A, %d of %b %Y at %I:%M %p.")
@@ -17,17 +17,17 @@ def get_date() -> str:
 
 def load_agenda():
     """
-    Carga la agenda desde el archivo JSON.
-    - Si el archivo existe, devuelve el diccionario de contactos.
-    - Si no existe, devuelve un diccionario vacío {}
-    - Si el archivo está corrupto (ej: contenido inválido), también devuelve {}.
+    Loads the address book from the JSON file.
+    - If the file exists, returns the contacts dictionary.
+    - If it doesn't exist, returns an empty dictionary {}
+    - If the file is corrupted (e.g., invalid content), also returns {}.
     """
     if AGENDA_FILE.exists():
         try:
             with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f) # -> {{}}
         except json.JSONDecodeError:
-            # Archivo corructo o vacío: arrancamos con un diccionario vacío
+            # Corrupt or empty file: we start with an empty dictionary
             return {}
     return {}
 
@@ -42,14 +42,14 @@ def get_id(agenda: dict) -> str:
     return str(new_id)
 
 def add_task(description: str):
-    """ Agrega una nueva tarea a la agenda.
+    """ Add a new task to the calendar.
 
-    La función carga la agenda desde el archivo JSON,
-    genera un nuevo ID para la tarea y la guarda 
-    con estado "todo"
+    The function loads the calendar from the JSON file,
+    generates a new ID for the task, and saves it
+    with the status "todo"
 
     Args:
-        description (str): Descripción de la tarea.
+        description (str): Description of the task.
 
     Returns: None
     """
@@ -73,14 +73,14 @@ def add_task(description: str):
     print(f'Tarea agregada con éxito (ID: {task_id})')
 
 def update_task(id_task: str, new_description: str = None):
-    """ Actualiza la descripción de una tarea.
+    """ Updates a task's description.
 
     Args:
-        id_task (str): Id de la tarea a actualizar.
-        new_description (str): Nueva descrición de la tarea.
+        id_task (str): ID of the task to update.
+        new_description (str): New task description.
 
     Returns:
-        None 
+        None
     """
     updatedAt = get_date() # Obtenemos la fecha actual
     
@@ -106,8 +106,7 @@ def delete_task(id_task: str):
     Args:
         id_task (str): id de la tarea a eliminar.
     
-    Returns:
-        None
+    Returns: None
     """
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
@@ -122,14 +121,13 @@ def delete_task(id_task: str):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def mark_task(arg: str, id_task: str):
-    """Actualiza el status de la tarea y su fecha de modificación.
+    """Updates the task status and its modification date.
 
     Args:
-        arg (str): status de la tarea.
-        id_task (str): id de la tarea a marcar.
-    
-    Returns:
-        None
+        arg (str): Task status.
+        id_task (str): ID of the task to check.
+
+    Returns: None
     """
     update_task(id_task)
     
@@ -142,11 +140,11 @@ def mark_task(arg: str, id_task: str):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def list_task(arg: str = None):
-    """Lista las tareas almacenadas en la agenda, filtrando por estado opcional.
+        """Lists the tasks stored in the calendar, filtering by optional status.
 
     Args:
-        arg (str, optional): Estado de la tarea a filtrar. 
-                             Puede ser 'todo', 'in-progress', 'done' o None para mostrar todas.
+        arg (str, optional): Status of the task to filter.
+            Can be 'all', 'in-progress', 'done', or None to display all tasks.
     """
     with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
         agenda = json.load(f)
@@ -171,31 +169,31 @@ def list_task(arg: str = None):
 def main():
     parser = argparse.ArgumentParser(prog='task-cli', description='task manager')
 
-    subparser = parser.add_subparsers(dest='command', help='comandos disponibles')
+    subparser = parser.add_subparsers(dest='command', help='available commands')
 
-    # subcomando 'add'
-    parser_add = subparser.add_parser('add', help='agrega una tarea.')
-    parser_add.add_argument('description', type=str, help='descripción de la tarea.')
+    # subcommand 'add'
+    parser_add = subparser.add_parser('add', help='add a task.')
+    parser_add.add_argument('description', type=str, help='task description.')
 
-    # subcomando 'update'
-    parser_update = subparser.add_parser('update', help='actualiza una tarea.')
-    parser_update.add_argument('id_task', type=str, help='id de la tarea.')
-    parser_update.add_argument('description', type=str, help='nueva descripción de la tarea.')
+    # subcommand 'update'
+    parser_update = subparser.add_parser('update', help='update a task.')
+    parser_update.add_argument('id_task', type=str, help='task ID.')
+    parser_update.add_argument('description', type=str, help='new task description.')
 
-    # subcomando 'delete'
-    parser_delete = subparser.add_parser('delete', help='elimina una tarea.')
-    parser_delete.add_argument('id_task', type=str, help='id de la tarea.')
+    # subcommand 'delete'
+    parser_delete = subparser.add_parser('delete', help='delete a task.')
+    parser_delete.add_argument('id_task', type=str, help='task ID.')
 
-    # subcomando 'mark-in-progress'
-    parser_mark_in_progress = subparser.add_parser('mark-in-progress', help='marca la tarea como en progreso.')
-    parser_mark_in_progress.add_argument('id_task', type=str, help='id de la tarea.')
+    # subcommand 'mark-in-progress'
+    parser_mark_in_progress = subparser.add_parser('mark-in-progress', help='mark the task as in progress.')
+    parser_mark_in_progress.add_argument('id_task', type=str, help='task ID.')
 
-    # subcomando 'mark-done'
-    parser_mark_done = subparser.add_parser('mark-done', help='marca la tarea como terminada.')
-    parser_mark_done.add_argument('id_task', type=str, help='id de la tarea.')
+    # subcommand 'mark-done'
+    parser_mark_done = subparser.add_parser('mark-done', help='mark the task as complete.')
+    parser_mark_done.add_argument('id_task', type=str, help='task ID.')
 
-    # subcomando 'list'
-    parser_list = subparser.add_parser('list', help='lista todas las tareas.')
+    # subcommand 'list'
+    parser_list = subparser.add_parser('list', help='list all task.')
     parser_list.add_argument('-m', choices=['todo', 'in-progress', 'done'])
 
     args = parser.parse_args()
