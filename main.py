@@ -36,12 +36,6 @@ def load_agenda():
             return {}
     return {}
 
-def open_agenda() -> dict:
-    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
-        agenda = json.load(f)
-
-    return agenda
-
 def saved_agenda(agenda: dict):
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
@@ -86,7 +80,7 @@ def add_task(description: str):
     
     print(f'Tarea agregada con éxito (ID: {task_id})')
 
-def update_task(id_task: str, new_description: str = None):
+def update_task(id_task: str, new_description: str):
     """ Updates a task's description.
 
     Args:
@@ -98,13 +92,16 @@ def update_task(id_task: str, new_description: str = None):
     """
     updatedAt = get_date() # Obtenemos la fecha actual
     
-    agenda = open_agenda()
+    agenda = load_agenda()
+
+    if not agenda:
+        print('the agenda is empty, first add a task.')
+        return
 
     if id_task in agenda:
         agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
+        agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
 
-        if new_description:
-            agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
     else:
         raise TaskNotFound(id_task)
 
@@ -118,7 +115,11 @@ def delete_task(id_task: str):
     
     Returns: None
     """
-    agenda = open_agenda()
+    agenda = load_agenda()
+
+    if not agenda:
+        print('the agenda is empty, first add a task.')
+        return
 
     if id_task in agenda:
         del agenda[id_task]
@@ -137,11 +138,16 @@ def mark_task(arg: str, id_task: str):
 
     Returns: None
     """
-    update_task(id_task)
+    updatedAt = get_date()
     
-    agenda = open_agenda()
+    agenda = load_agenda()
 
+    if not agenda:
+        print('the agenda is empty, first add a task.')
+        return
+        
     if id_task in agenda:
+        agenda[id_task]['updatedAt'] = updatedAt
         agenda[id_task]['status'] = arg # Agregamos el nuevo status
     else:
         raise TaskNotFound(id_task)
@@ -155,7 +161,11 @@ def list_task(arg: str = None):
         arg (str, optional): Status of the task to filter.
             Can be 'all', 'in-progress', 'done', or None to display all tasks.
     """
-    agenda = open_agenda()
+    agenda = load_agenda()
+
+    if not agenda:
+        print('the agenda is empty, first add a task.')
+        return
 
     for k, v in agenda.items():
 
