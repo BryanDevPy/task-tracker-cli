@@ -62,9 +62,9 @@ def add_task(description: str):
 
     Returns: None
     """
-    createdAt = get_date() # Obtenemos la fecha actual
-    task = load_agenda() # Cargamos el dict actual
-    task_id = get_id(task) # Obtenemos el id disponible
+    createdAt = get_date()
+    task = load_agenda()
+    task_id = get_id(task)
 
     content_task = {
         'description':description,
@@ -73,9 +73,8 @@ def add_task(description: str):
         'updatedAt':None
     }
 
-    task[task_id] = content_task # Insertamos la nueva tarea
+    task[task_id] = content_task
 
-    # Persistimos la agenda actualizada en el archivo
     saved_agenda(task)
     
     print(f'Tarea agregada con éxito (ID: {task_id})')
@@ -90,7 +89,7 @@ def update_task(id_task: str, new_description: str):
     Returns:
         None
     """
-    updatedAt = get_date() # Obtenemos la fecha actual
+    updatedAt = get_date()
     
     agenda = load_agenda()
 
@@ -99,8 +98,8 @@ def update_task(id_task: str, new_description: str):
         return
 
     if id_task in agenda:
-        agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
-        agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
+        agenda[id_task]['updatedAt'] = updatedAt
+        agenda[id_task]['description'] = new_description
 
     else:
         raise TaskNotFound(id_task)
@@ -148,7 +147,7 @@ def mark_task(arg: str, id_task: str):
         
     if id_task in agenda:
         agenda[id_task]['updatedAt'] = updatedAt
-        agenda[id_task]['status'] = arg # Agregamos el nuevo status
+        agenda[id_task]['status'] = arg
     else:
         raise TaskNotFound(id_task)
     
