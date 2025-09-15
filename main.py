@@ -31,6 +31,16 @@ def load_agenda():
             return {}
     return {}
 
+def open_agenda() -> dict:
+    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
+        agenda = json.load(f)
+
+    return agenda
+
+def saved_agenda(agenda: dict):
+    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(agenda, f, ensure_ascii=False, indent=4)
+
 def get_id(agenda: dict) -> str:
     """ Generates a new incremental ID based on the calendar keys.
     Args:
@@ -67,8 +77,7 @@ def add_task(description: str):
     task[task_id] = content_task # Insertamos la nueva tarea
 
     # Persistimos la agenda actualizada en el archivo
-    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(task, f, ensure_ascii=False, indent=4)
+    saved_agenda(task)
     
     print(f'Tarea agregada con éxito (ID: {task_id})')
 
@@ -84,8 +93,7 @@ def update_task(id_task: str, new_description: str = None):
     """
     updatedAt = get_date() # Obtenemos la fecha actual
     
-    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
-        agenda = json.load(f)
+    agenda = open_agenda()
 
     if id_task in agenda:
         agenda[id_task]['updatedAt'] = updatedAt # Agregamos la fecha actualizada
@@ -95,8 +103,7 @@ def update_task(id_task: str, new_description: str = None):
     else:
         print('Tarea no encontrada.')
 
-    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(agenda, f, ensure_ascii=False, indent=4)
+    saved_agenda(agenda)
 
 def delete_task(id_task: str):
     """Elimina una tarea de la agenda.
@@ -106,8 +113,7 @@ def delete_task(id_task: str):
     
     Returns: None
     """
-    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
-        agenda = json.load(f)
+    agenda = open_agenda()
 
     if id_task in agenda:
         del agenda[id_task]
@@ -115,8 +121,7 @@ def delete_task(id_task: str):
     else:
         print('Tarea no encontrada.')
     
-    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(agenda, f, ensure_ascii=False, indent=4)
+    saved_agenda(agenda)
 
 def mark_task(arg: str, id_task: str):
     """Updates the task status and its modification date.
@@ -129,13 +134,11 @@ def mark_task(arg: str, id_task: str):
     """
     update_task(id_task)
     
-    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
-        agenda = json.load(f)
+    agenda = open_agenda()
 
     agenda[id_task]['status'] = arg # Agregamos el nuevo status
     
-    with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(agenda, f, ensure_ascii=False, indent=4)
+    saved_agenda(agenda)
 
 def list_task(arg: str = None):
     """Lists the tasks stored in the calendar, filtering by optional status.
@@ -144,8 +147,7 @@ def list_task(arg: str = None):
         arg (str, optional): Status of the task to filter.
             Can be 'all', 'in-progress', 'done', or None to display all tasks.
     """
-    with open(AGENDA_FILE, 'r', encoding='utf-8') as f:
-        agenda = json.load(f)
+    agenda = open_agenda()
 
     for k, v in agenda.items():
 
