@@ -5,6 +5,11 @@ from datetime import datetime
 
 AGENDA_FILE = Path('agenda.json')
 
+class TaskNotFound(Exception):
+    def __init__(self, id_task: str):
+        self.id_task = id_task
+        super().__init__(f'the task with the id {id_task} does not exist.')
+
 def get_date() -> str:
     """Generates the current date and time in human-readable format.
 
@@ -101,7 +106,7 @@ def update_task(id_task: str, new_description: str = None):
         if new_description:
             agenda[id_task]['description'] = new_description # Agregamos la nueva descripción
     else:
-        print('Tarea no encontrada.')
+        raise TaskNotFound(id_task)
 
     saved_agenda(agenda)
 
@@ -119,7 +124,7 @@ def delete_task(id_task: str):
         del agenda[id_task]
         print(f'Tarea {id_task} eliminada')
     else:
-        print('Tarea no encontrada.')
+        raise TaskNotFound(id_task)
     
     saved_agenda(agenda)
 
@@ -136,7 +141,10 @@ def mark_task(arg: str, id_task: str):
     
     agenda = open_agenda()
 
-    agenda[id_task]['status'] = arg # Agregamos el nuevo status
+    if id_task in agenda:
+        agenda[id_task]['status'] = arg # Agregamos el nuevo status
+    else:
+        raise TaskNotFound(id_task)
     
     saved_agenda(agenda)
 
@@ -201,14 +209,31 @@ def main():
     # CLI
     if args.command == 'add':
         add_task(args.description)
+
     elif args.command == 'update':
-        update_task(args.id_task, args.description)
+        try:
+            update_task(args.id_task, args.description)
+        except TaskNotFound as e:
+            print(e)
+
     elif args.command == 'delete':
-        delete_task(args.id_task)
+        try:
+            delete_task(args.id_task)
+        except TaskNotFound as e:
+            print(e)
+
     elif args.command == 'mark-in-progress':
-        mark_task('in-progress', args.id_task)
+        try:
+            mark_task('in-progress', args.id_task)
+        except TaskNotFound as e:
+            print(e)
+
     elif args.command == 'mark-done':
-        mark_task('done', args.id_task)
+        try:
+            mark_task('done', args.id_task)
+        except TaskNotFound as e:
+            print(e)
+
     elif args.command == 'list':
         if args.m == 'in-progress':
             list_task(args.m)
