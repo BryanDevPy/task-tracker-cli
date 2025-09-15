@@ -61,7 +61,7 @@ def add_task(description: str):
         'description':description,
         'status':'todo',
         'createdAt':createdAt,
-        'updatedAt':False
+        'updatedAt':None
     }
 
     task[task_id] = content_task # Insertamos la nueva tarea
@@ -95,8 +95,6 @@ def update_task(id_task: str, new_description: str = None):
     else:
         print('Tarea no encontrada.')
 
-    
-    
     with open(AGENDA_FILE, 'w', encoding='utf-8') as f:
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
@@ -140,7 +138,7 @@ def mark_task(arg: str, id_task: str):
         json.dump(agenda, f, ensure_ascii=False, indent=4)
 
 def list_task(arg: str = None):
-        """Lists the tasks stored in the calendar, filtering by optional status.
+    """Lists the tasks stored in the calendar, filtering by optional status.
 
     Args:
         arg (str, optional): Status of the task to filter.
