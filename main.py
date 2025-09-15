@@ -202,7 +202,7 @@ def main():
 
     # subcommand 'list'
     parser_list = subparser.add_parser('list', help='list all task.')
-    parser_list.add_argument('-m', choices=['todo', 'in-progress', 'done'])
+    parser_list.add_argument('status', nargs='?', choices=['todo', 'in-progress', 'done'], help='Status to filter (optional). valid values: todo | in-progress | done.')
 
     args = parser.parse_args()
 
@@ -235,12 +235,12 @@ def main():
             print(e)
 
     elif args.command == 'list':
-        if args.m == 'in-progress':
-            list_task(args.m)
-        elif args.m == 'done':
-            list_task(args.m)
-        elif args.m == 'todo':
-            list_task(args.m)
+        if args.status == 'in-progress':
+            list_task(args.status)
+        elif args.status == 'done':
+            list_task(args.status)
+        elif args.status == 'todo':
+            list_task(args.status)
         else:
             list_task()
 
