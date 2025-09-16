@@ -1,6 +1,7 @@
 # Otros
 *.txt
 *.json
+.pypirc
 
 # Bytecode y cachés
 __pycache__/
