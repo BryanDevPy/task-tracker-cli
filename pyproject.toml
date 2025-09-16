@@ -1,6 +1,6 @@
 [project]
 name = "task_tracker_cli_Laguz99"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Laguz99", email="bryanellis.dev@gmail.com" },
 ]
@@ -13,7 +13,7 @@ classifiers = [
 ]
 
 [project.scripts]
-task-tracker = "main:main"
+task-tracker = "src.task-task_tracker_cli_Laguz99.main:main"
 
 [project.urls]
 Homepage = "https://github.com/EllisDev99/task-tracker-cli"
