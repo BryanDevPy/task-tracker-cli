@@ -77,7 +77,7 @@ def add_task(description: str):
 
     saved_agenda(task)
     
-    print(f'Tarea agregada con éxito (ID: {task_id})')
+    print(f'Task added successfully (ID: {task_id})')
 
 def update_task(id_task: str, new_description: str):
     """ Updates a task's description.
@@ -122,7 +122,7 @@ def delete_task(id_task: str):
 
     if id_task in agenda:
         del agenda[id_task]
-        print(f'Tarea {id_task} eliminada')
+        print(f'Task {id_task} delete')
     else:
         raise TaskNotFound(id_task)
     
