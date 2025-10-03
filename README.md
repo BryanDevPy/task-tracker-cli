@@ -13,7 +13,7 @@ This is a light app for the administration of tasks from the Command-Line Interf
 ## Installation
 
 ```bash
-pip install task-tracker-cli-Laguz99
+pip install task-tracker-cli-bryandev
 ```
 
 
